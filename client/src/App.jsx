@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Admin } from './pages/Admin';
 import { Navigation } from './components/Navigation';
 
 function App() {
+//   useEffect(() => {
+//     // Test API connection on startup
+//     const testConnection = async () => {
+//       try {
+//         const response = await api.getCursors();
+//         console.log('API Connection successful:', response.data);
+//       } catch (error) {
+//         console.error('API Connection failed:', error);
+//       }
+//     };
+//     testConnection();
+//   }, []);
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">

@@ -9,7 +9,7 @@ export const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
             <MousePointer2 className="h-6 w-6 text-indigo-600" />
-            <span className="font-bold text-xl">CursorHub</span>
+            <span className="font-bold text-xl">Custom Cursor</span>
           </Link>
           <div className="flex space-x-4">
             <Link

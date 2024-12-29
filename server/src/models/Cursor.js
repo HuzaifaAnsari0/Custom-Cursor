@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const cursorSchema = new mongoose.Schema({
   name: { 
@@ -22,4 +22,4 @@ const cursorSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export const Cursor = mongoose.model('Cursor', cursorSchema);
+module.exports = mongoose.model('Cursor', cursorSchema);
