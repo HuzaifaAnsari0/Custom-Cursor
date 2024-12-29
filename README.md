@@ -1,11 +1,11 @@
-# Cursor Showcase
+# Custom Cursors
 
 A web application for sharing and downloading custom cursor designs.
 
 ## Project Structure
 ```
 cursor-showcase/
-├── client/         # React frontend
+├── client/         # React+Vite frontend
 ├── server/         # Express backend
 └── README.md
 ```
