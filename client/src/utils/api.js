@@ -1,37 +1,36 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
-const apiClient = axios.create({
-  baseURL: API_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_URL + '/api'
 });
 
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error('API Error:', error);
-    if (error.code === 'ECONNABORTED') {
-      throw new Error('Request timed out. Please try again.');
-    }
-    
-    if (!error.response) {
-      throw new Error('Network error. Please check your connection.');
-    }
-    
-    throw error;
+// Add request interceptor to include token
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('adminToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 export const api = {
-  getCursors: () => apiClient.get('/cursors'),
-  uploadCursor: (formData) => apiClient.post('/cursors', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+  // Auth endpoints
+  adminLogin: (data) => axiosInstance.post('/admin/login', data),
+  adminSignup: (data) => axiosInstance.post('/admin/signup', data),
+  
+  // Cursor endpoints
+  getCursors: () => axiosInstance.get('/cursors'),
+  uploadCursor: (formData) => axiosInstance.post('/cursors', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   }),
-  incrementDownloads: (id) => apiClient.post(`/cursors/${id}/download`),
+  
+  // Admin endpoints
+  getPendingCursors: () => {
+    return axiosInstance.get('/cursors/pending');
+  },
+  updateCursorStatus: (cursorId, status) => {
+    return axiosInstance.patch(`/cursors/${cursorId}/status`, { status });
+  },
+  getStats: () => axiosInstance.get('/cursors/stats'),
+  deleteCursor: (cursorId) => axiosInstance.delete(`/cursors/${cursorId}`),
 };

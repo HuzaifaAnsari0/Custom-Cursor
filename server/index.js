@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const connectDB = require('./src/db');
 const cursorsRoutes = require('./src/routes/cursors');
+const adminRoutes = require('./src/routes/admin');
 const fs = require('fs');
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/cursors', cursorsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Test route
 app.get('/api/test', (req, res) => {

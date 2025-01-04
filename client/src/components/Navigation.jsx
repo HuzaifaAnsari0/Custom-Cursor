@@ -1,8 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { MousePointer2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { MousePointer2, LogOut, Upload, InboxIcon, Shield } from 'lucide-react';
 
 export const Navigation = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('adminToken');
+  const isAdmin = localStorage.getItem('userRole') === '1';
+  // console.log(isAdmin);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('userRole');
+    navigate('/');
+  };
+
   return (
     <nav className="bg-white shadow-lg">
       <div className="container mx-auto px-4">
@@ -19,11 +30,43 @@ export const Navigation = () => {
               Home
             </Link>
             <Link
-              to="/admin"
-              className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              to="/upload"
+              className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
             >
-              Admin
+              <Upload className="h-4 w-4 mr-1" />
+              Upload
             </Link>
+            {isAuthenticated && (
+              <>
+                {isAdmin && (
+                  <>
+                    <Link
+                      to="/admin"
+                      className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                    >
+                      <Shield className="h-4 w-4 mr-1" />
+                      Dashboard
+                    </Link>
+                    
+                  </>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                >
+                  <LogOut className="h-4 w-4 mr-1" />
+                  Logout
+                </button>
+              </>
+            )}
+            {!isAuthenticated && (
+              <Link
+                to="/admin/login"
+                className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
