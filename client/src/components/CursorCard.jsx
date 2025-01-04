@@ -90,7 +90,11 @@ export const CursorCard = ({ cursor, isAdmin, onDelete }) => {
       />
       <div 
         className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-        style={{ cursor: `url(${imageUrl}), auto` }}
+        style={{ 
+          cursor: `url(${imageUrl}?width=32&height=32) 16 16, auto`,
+          WebkitCursor: `url(${imageUrl}?width=32&height=32) 16 16, auto`,
+          MozCursor: `url(${imageUrl}?width=32&height=32) 16 16, auto`
+        }}
       >
         <div className="p-4">
           <div className="flex justify-between items-start mb-4">

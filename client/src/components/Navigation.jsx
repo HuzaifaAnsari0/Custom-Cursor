@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MousePointer2, LogOut, Upload, InboxIcon, Shield } from 'lucide-react';
+import { MousePointer2, LogOut, Upload, Shield, Book } from 'lucide-react';
 
 export const Navigation = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
             <MousePointer2 className="h-6 w-6 text-indigo-600" />
-            <span className="font-bold text-xl">Custom Cursor</span>
+            <span className="font-bold text-xl">CursorCraft</span>
           </Link>
           <div className="flex space-x-4">
             <Link
@@ -28,6 +28,13 @@ export const Navigation = () => {
               className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Home
+            </Link>
+            <Link
+              to="/docs"
+              className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+            >
+              <Book className="h-4 w-4 mr-1" />
+              Docs
             </Link>
             <Link
               to="/upload"
@@ -39,16 +46,13 @@ export const Navigation = () => {
             {isAuthenticated && (
               <>
                 {isAdmin && (
-                  <>
-                    <Link
-                      to="/admin"
-                      className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-                    >
-                      <Shield className="h-4 w-4 mr-1" />
-                      Dashboard
-                    </Link>
-                    
-                  </>
+                  <Link
+                    to="/admin"
+                    className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                  >
+                    <Shield className="h-4 w-4 mr-1" />
+                    Dashboard
+                  </Link>
                 )}
                 <button
                   onClick={handleLogout}

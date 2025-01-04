@@ -39,10 +39,10 @@ export const Home = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Custom Cursor Gallery
+          CursorCraft Gallery
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-          Browse our collection of custom cursors and enhance your website's interactivity
+          Browse our collection of CursorCrafts and enhance your website's interactivity
         </p>
         <button
           onClick={() => navigate('/upload')}

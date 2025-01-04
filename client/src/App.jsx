@@ -6,6 +6,11 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { AdminLogin } from './pages/AdminLogin';
 import { AdminSignup } from './pages/AdminSignup';
 import { Navigation } from './components/Navigation';
+import { Documentation } from './pages/Documentation';
+import { Footer } from './components/Footer';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsAndConditions } from './pages/TermsAndConditions';
+import { About } from './pages/About';
 
 // Protected Route component
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
@@ -26,9 +31,9 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen flex flex-col">
         <Navigation />
-        <main className="container mx-auto px-4 py-8">
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/upload" element={
@@ -46,8 +51,13 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/docs" element={<Documentation />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );

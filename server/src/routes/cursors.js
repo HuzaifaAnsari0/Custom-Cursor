@@ -4,6 +4,7 @@ const path = require('path');
 const Cursor = require('../models/Cursor');
 const auth = require('../middleware/auth');
 const fs = require('fs').promises;
+const sharp = require('sharp');
 
 const router = express.Router();
 
@@ -196,6 +197,33 @@ router.delete('/:id', auth, async (req, res) => {
   } catch (error) {
     console.error('Delete cursor error:', error);
     res.status(500).json({ message: 'Failed to delete cursor' });
+  }
+});
+
+// Get cursor image with optional resizing
+router.get('/:id/image', async (req, res) => {
+  try {
+    const cursor = await Cursor.findById(req.params.id);
+    if (!cursor) {
+      return res.status(404).json({ message: 'Cursor not found' });
+    }
+
+    const imagePath = path.join(__dirname, '../../uploads', path.basename(cursor.imageUrl));
+    let imageBuffer = await fs.readFile(imagePath);
+
+    const { width, height } = req.query;
+    if (width && height) {
+      imageBuffer = await sharp(imageBuffer)
+        .resize(parseInt(width), parseInt(height))
+        .toBuffer();
+    }
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
+    res.send(imageBuffer);
+  } catch (error) {
+    console.error('Image serve error:', error);
+    res.status(500).json({ message: 'Failed to serve cursor image' });
   }
 });
 

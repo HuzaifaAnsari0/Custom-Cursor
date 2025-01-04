@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { api } from '../utils/api';
 import { Toast } from './Toast';
 
@@ -7,11 +7,54 @@ export const PublicUpload = ({ onUploadSuccess }) => {
   const [name, setName] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
   const showToast = (message, variant) => {
     setToast({ message, variant });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Create a new image element
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target.result;
+        img.onload = () => {
+          // Create a canvas to resize the image
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Set the canvas size to 32x32
+          canvas.width = 32;
+          canvas.height = 32;
+          
+          // Draw the image scaled down
+          ctx.drawImage(img, 0, 0, 32, 32);
+          
+          // Convert canvas back to a file
+          canvas.toBlob((blob) => {
+            const resizedFile = new File([blob], file.name, {
+              type: 'image/png',
+              lastModified: Date.now(),
+            });
+            
+            setImage(resizedFile);
+            setImagePreview(canvas.toDataURL('image/png'));
+          }, 'image/png');
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImage = () => {
+    setImage(null);
+    setImagePreview(null);
   };
 
   const handleSubmit = async (e) => {
@@ -29,6 +72,7 @@ export const PublicUpload = ({ onUploadSuccess }) => {
       setName('');
       setCreatedBy('');
       setImage(null);
+      setImagePreview(null);
       e.target.reset();
       if (onUploadSuccess) {
         onUploadSuccess();
@@ -84,25 +128,43 @@ export const PublicUpload = ({ onUploadSuccess }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Cursor Image
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative">
               <div className="space-y-1 text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <div className="flex text-sm text-gray-600">
-                  <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                    <span>Upload a file</span>
+                {!imagePreview ? (
+                  <label className="cursor-pointer block">
+                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                    <div className="flex justify-center text-sm text-gray-600">
+                      <span className="relative bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
+                        Upload a file
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500">PNG, CUR up to 100KB</p>
                     <input
                       type="file"
                       className="sr-only"
                       accept="image/*,.cur"
-                      onChange={(e) => setImage(e.target.files[0])}
+                      onChange={handleImageChange}
                       required
                     />
                   </label>
-                </div>
-                {image && (
-                  <p className="text-sm text-gray-500">
-                    Selected: {image.name}
-                  </p>
+                ) : (
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="max-h-32 mx-auto object-contain"
+                    />
+                    <button
+                      type="button"
+                      onClick={clearImage}
+                      className="absolute -top-2 -right-2 bg-red-100 rounded-full p-1 text-red-600 hover:bg-red-200"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    <p className="text-sm text-gray-500 mt-2">
+                      {image.name}
+                    </p>
+                  </div>
                 )}
               </div>
             </div>

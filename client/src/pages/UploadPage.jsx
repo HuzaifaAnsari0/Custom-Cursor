@@ -11,7 +11,7 @@ export const UploadPage = () => {
         </div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Upload Your Cursor</h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Share your custom cursor design with the community
+          Share your CursorCraft design with the community
         </p>
       </div>
 

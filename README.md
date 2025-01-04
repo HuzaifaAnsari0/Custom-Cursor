@@ -1,6 +1,6 @@
-# Custom Cursors
+# CursorCrafts
 
-A web application for sharing and downloading custom cursor designs.
+A web application for sharing and downloading CursorCraft designs.
 
 ## Project Structure
 ```
