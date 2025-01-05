@@ -87,7 +87,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 
     const imageUrl = `/uploads/${req.file.filename}`;
-    const serverUrl = process.env.VITE_SERVER_URL || 'http://localhost:5000';
+    const serverUrl = process.env.SERVER_URL || 'http://localhost:5000';
     const className = `cursor-${name.toLowerCase().replace(/\s+/g, '-')}`;
 
     const cursor = new Cursor({
